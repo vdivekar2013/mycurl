@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.SSLContext;
@@ -27,6 +28,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
@@ -124,13 +126,13 @@ public class Curl {
 				if(line != null)
 					System.out.println(line);
 			} while(line != null);
-		} catch (KeyManagementException | NoSuchAlgorithmException | IOException e) {
+		} catch (KeyStoreException | KeyManagementException | NoSuchAlgorithmException | IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static Registry<ConnectionSocketFactory> getRegistry(String tlsProtocols) throws KeyManagementException, NoSuchAlgorithmException {
-		SSLContext sslContext = SSLContexts.custom().build();
+	private static Registry<ConnectionSocketFactory> getRegistry(String tlsProtocols) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
+		SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build();
 		String[] tlsProtocolArray = tlsProtocols != null ? tlsProtocols.split(",") : new String[]{"TLSv1.2"};
 		SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,
 				tlsProtocolArray, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
