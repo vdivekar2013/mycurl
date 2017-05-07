@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="mycurlProperties"	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:mycurl.properties" />
+	</bean>
+	<bean id="command" class="com.nitrohub.curl.Command" scope="singleton">
+		<property name="proxyUse" value="${proxy.use}" />
+		<property name="proxyHost" value="${proxy.host}" />
+		<property name="proxyPort" value="${proxy.port}" />
+		<property name="proxyUser" value="${proxy.user}" />
+		<property name="proxyPass" value="${proxy.pass}" />
+		<property name="tlsProtocols" value="${tls.protocols}" />
+		<property name="authUse" value="${auth.use}" />
+		<property name="authUser" value="${auth.user}" />
+		<property name="authPass" value="${auth.pass}" />
+		<property name="callMethod" value="${call.method}" />
+		<property name="callUrl" value="${call.url}" />
+		<property name="callEntity" value="${call.entity}" />
+		<property name="callHeader" value="${call.header}" />
+	</bean>
+
+</beans>
